@@ -28,7 +28,7 @@ define(['physics', 'surface'], function(physics, Surface) {
 	}
 
 	function initScene(scene) {
-		var surface = new Surface(50, 25, 5.0);
+		var surface = new Surface(50, 15);
 		
 		var geometry = createGeometry(surface);
 		var mesh = createMesh(geometry); 
