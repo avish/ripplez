@@ -27,7 +27,7 @@ define('surface', ['physics'], function(physics) {
 				
 				var p = new physics.PhysicalObject(v);
 				p.mass = this.pointMass;
-				p.coords = { i: i, j: j }
+				p.coords = [i, j]
 				p.isEdge = (
 					Math.abs(i) == this.resolution || 
 					Math.abs(j) == this.resolution || 
@@ -42,11 +42,18 @@ define('surface', ['physics'], function(physics) {
 	}
 	
 	Surface.prototype = {
-		findPoint: function(i, j) {
-			if (this.pointsMap[i] && this.pointsMap[i][j])
-				return this.pointsMap[i][j];
+		findPoint: function(coords) {
+			if (this.pointsMap[coords[0]] && this.pointsMap[coords[0]][coords[1]])
+				return this.pointsMap[coords[0]][coords[1]];
 				
 			return null;
+		},
+		
+		findNeighbour: function(p, offset) {
+			if (!p || !p.coords) 
+				return null;
+			
+			return this.findPoint([p.coords[0] + offset[0], p.coords[1] + offset[1]]);
 		},
 		
 		update: function() {
@@ -63,7 +70,7 @@ define('surface', ['physics'], function(physics) {
 					[-1, 1],
 					[1, -1]
 				]
-				.map(function(coords) { return self.findPoint(p.coords.i + coords[0], p.coords.j + coords[1]); })
+				.map(function(offset) { return self.findNeighbour(p, offset); })
 				.filter(function(p) { return p != null; });
 
 				var zForce = 0;
@@ -77,8 +84,7 @@ define('surface', ['physics'], function(physics) {
 				p.applyForce(new THREE.Vector3(0, 0, zForce));
 				
 				if (Math.random() < 0.0001)
-					p.velocity.z -= 25;
-
+					p.velocity.z -= 10;
 			});
 		}
 	};

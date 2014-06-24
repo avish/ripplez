@@ -41,15 +41,32 @@ define(['physics', 'surface'], function(physics, Surface) {
 		var g = new THREE.Geometry();
 		
 		surface.points.forEach(function(p) { g.vertices.push(p.position); });
-		physics.World.onUpdate(function(e) { g.verticesNeedUpdate = true; })
+		
+		var findVertexIndex = function(p) {
+			return g.vertices.indexOf(p.position);
+		};
+		
+		var addFace = function(point, offset1, offset2) {
+			var neighbour1 = surface.findNeighbour(point, offset1);
+			var neighbour2 = surface.findNeighbour(point, offset2);
+			if (neighbour1 && neighbour2)
+				g.faces.push(new THREE.Face3(findVertexIndex(point), findVertexIndex(neighbour1), findVertexIndex(neighbour2)));
+		};
+		
+		surface.points.forEach(function(point) {
+			addFace(point, [1, 0], [0, 1]);
+			addFace(point, [-1, 0], [0, -1]);
+		});
+		
+		physics.World.onUpdate(function(e) { g.verticesNeedUpdate = true; g.elementsNeedUpdate = true; })
 		
 		return g;
 	}
 	
 	function createMesh(geometry) {
-			var ps = new THREE.ParticleSystem(
-				geometry, 
-				new THREE.ParticleSystemMaterial({ size: 1.0, sizeAttenuation: false }));
+		var ps = new THREE.Mesh(
+			geometry, 
+			new THREE.MeshBasicMaterial({ wireframe: true }));
 				
 		return ps;
 	}
