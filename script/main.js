@@ -35,6 +35,10 @@ define(['physics', 'surface'], function(physics, Surface) {
 		mesh.rotation.x = -Math.PI / 4;
 		
 		scene.add(mesh);
+		
+		var light = new THREE.DirectionalLight(0xffffff, 0.8);
+		light.position.set(1, 10, 2);
+		scene.add(light);
 	}
 	
 	function createGeometry(surface) {
@@ -58,7 +62,12 @@ define(['physics', 'surface'], function(physics, Surface) {
 			addFace(point, [-1, 0], [0, -1]);
 		});
 		
-		physics.World.onUpdate(function(e) { g.verticesNeedUpdate = true; g.elementsNeedUpdate = true; })
+		physics.World.onUpdate(function(e) { 
+			g.verticesNeedUpdate = true; 
+			g.normalsNeedUpdate = true; 
+			g.computeFaceNormals(); 
+			g.computeVertexNormals(); 
+		})
 		
 		return g;
 	}
@@ -66,7 +75,7 @@ define(['physics', 'surface'], function(physics, Surface) {
 	function createMesh(geometry) {
 		var ps = new THREE.Mesh(
 			geometry, 
-			new THREE.MeshBasicMaterial({ wireframe: true }));
+			new THREE.MeshPhongMaterial({ color: 0x1144ff }));
 				
 		return ps;
 	}

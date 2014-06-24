@@ -87,7 +87,7 @@ define('surface', ['physics'], function(physics) {
 					p.velocity.z -= (10 + Math.random() * 20);
 					
 				if (Math.random() < 0.00001)
-					p.velocity.z -= (100 + Math.random() * 100);
+					p.velocity.z -= (20 + Math.random() * 5);
 				
 			});
 		}
