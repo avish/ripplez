@@ -13,12 +13,16 @@ define(['physics', 'surface'], function(physics, Surface) {
 		camera.position.z = 100;
 		
 		renderer = new THREE.WebGLRenderer();
-		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement);
-	}
-	
-	function render() {
-		renderer.render(scene, camera);
+		
+		var resizeToWindow = function() {
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+		};
+
+		window.addEventListener('resize', resizeToWindow);
+		resizeToWindow();
 	}
 	
 	function animate() {
@@ -27,6 +31,10 @@ define(['physics', 'surface'], function(physics, Surface) {
 		physics.World.update();
 	}
 
+	function render() {
+		renderer.render(scene, camera);
+	}
+	
 	function initScene(scene) {
 		var surface = new Surface(50, 15);
 		
