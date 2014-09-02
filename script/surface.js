@@ -6,9 +6,9 @@ define('surface', ['physics'], function(physics) {
 		
 		this.scale = scale;
 		this.resolution = resolution;
-		this.pointMass = pointMass || 0.03;
+		this.pointMass = pointMass || 0.02;
 		this.tension = 1.0 / 6;
-		this.friction = 0.1;
+		this.friction = 0.02;
 		
 		this.points = [];
 		this.pointsMap = {};
@@ -82,13 +82,12 @@ define('surface', ['physics'], function(physics) {
 	 			zForce -= p.velocity.z * self.friction;
 				
 				p.applyForce(new THREE.Vector3(0, 0, zForce));
-				
+
 				if (Math.random() < 0.0001)
-					p.velocity.z -= (10 + Math.random() * 20);
+					p.velocity.z -= Math.random() * 10;
 					
 				if (Math.random() < 0.00001)
-					p.velocity.z -= (50 + Math.random() * 100);
-				
+					p.velocity.z -= (25 + Math.random() * 50);
 			});
 		}
 	};
