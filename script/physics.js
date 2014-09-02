@@ -20,7 +20,7 @@ define('physics', [], function() {
 			
 			update: function() {
 				var dt = clock.getDelta();
-				if (dt > 1) dt = 1.0; // don't lose your shit if we've been tabbed out for a while
+				if (dt > 0.1) dt = 0.1; // don't lose your shit if we've been tabbed out for a while
 				eventDispatcher.dispatchEvent({ type: 'update', dt: dt });
 			}
 		};
