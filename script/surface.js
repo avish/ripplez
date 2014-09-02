@@ -6,9 +6,9 @@ define('surface', ['physics'], function(physics) {
 		
 		this.scale = scale;
 		this.resolution = resolution;
-		this.pointMass = pointMass || 2.0;
-		this.tension = 10.0;
-		this.friction = 8.0;
+		this.pointMass = pointMass || 0.03;
+		this.tension = 1.0 / 6;
+		this.friction = 0.1;
 		
 		this.points = [];
 		this.pointsMap = {};
@@ -87,7 +87,7 @@ define('surface', ['physics'], function(physics) {
 					p.velocity.z -= (10 + Math.random() * 20);
 					
 				if (Math.random() < 0.00001)
-					p.velocity.z -= (20 + Math.random() * 5);
+					p.velocity.z -= (50 + Math.random() * 100);
 				
 			});
 		}
