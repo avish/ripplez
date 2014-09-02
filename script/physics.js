@@ -38,9 +38,9 @@ define('physics', [], function() {
 	
 	PhysicalObject.prototype = {
 		update: function(dt) {
-			this.position.add(this.velocity.clone().multiplyScalar(dt));
-			this.velocity.add(this.acceleration.clone().multiplyScalar(dt));
 			this.acceleration = this.force.clone().multiplyScalar(1.0 / this.mass);
+			this.velocity.add(this.acceleration.clone().multiplyScalar(dt));
+			this.position.add(this.velocity.clone().multiplyScalar(dt));
 			this.force.set(0, 0, 0);
 		},
 		
